@@ -333,7 +333,7 @@ public class issue extends javax.swing.JFrame {
             int SelectedRowIndex = jTable1.getSelectedRow();
             int SelectedColIndex = jTable1.getSelectedColumn();
             String BookId = (String) jTable1.getValueAt(SelectedRowIndex, 3);
-            System.out.println(BookId);
+            //System.out.println(BookId);
             new IssueStudentId(BookId).setVisible(true);
 
         } else {
