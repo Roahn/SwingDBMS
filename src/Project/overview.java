@@ -1,17 +1,60 @@
 package Project;
-
-
+import java.sql.DatabaseMetaData;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import Project.ConnectionProvider;
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Rohan
  */
+class TableNames {
+
+    public TableNames(DefaultTableModel obj) {
+        Connection con = ConnectionProvider.getCon();
+        try {
+           DatabaseMetaData dbmd = con.getMetaData();
+            String table[] = {
+                "TABLE"
+            };
+            ResultSet rs = dbmd.getTables("lms", null, null, table);
+            DefaultTableModel model = obj;
+            
+
+            while (rs.next()) {
+                Object[] row = new Object[1];
+                row[0]=rs.getString(3);
+                model.addRow(row);
+               // System.out.println(rs.getString(3));
+            }
+ 
+        } catch (SQLException ex) { 
+            Logger.getLogger(TableNames.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+
+
+    }
+
+}
+
 public class overview extends javax.swing.JFrame {
 
     /**
@@ -19,6 +62,8 @@ public class overview extends javax.swing.JFrame {
      */
     public overview() {
         initComponents();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        TableNames obj =new TableNames(model);
     }
 
     /**
@@ -30,21 +75,194 @@ public class overview extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+
+        jMenuItem1.setText("jMenuItem1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jButton2.setText("Select File");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Import Data Into "
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        jButton1.setText("Back");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(65, 65, 65)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+
+        if (jTable1.getSelectedRowCount() == 1) {
+            int SelectedRowIndex = jTable1.getSelectedRow();
+            int SelectedColIndex = jTable1.getSelectedColumn();
+            String TableName = (String) jTable1.getValueAt(SelectedRowIndex, SelectedColIndex);
+            //System.out.println(BookId);
+         
+        JFileChooser choser = new JFileChooser();
+        choser.showOpenDialog(null);
+        File f = choser.getSelectedFile();
+
+        if (f != null) {
+            String filename = f.getAbsolutePath();
+
+            try {
+                File Obj = new File(filename);
+                Scanner Reader = new Scanner(Obj);
+                Connection con = ConnectionProvider.getCon();
+                
+                while (Reader.hasNextLine()) {
+                    String data = Reader.nextLine();
+                    String[] lines = data.split(",");
+                    StringBuilder dataInput = new StringBuilder();
+                    for(int j = 0;j<lines.length;j++)
+                    {
+                        if(j>0)
+                            {
+                                dataInput.append(',');
+                            }
+                            dataInput.append('"');
+                        dataInput.append(lines[j]);
+                        dataInput.append('"');
+                    }
+                    
+                    try {
+
+                        Statement st = con.createStatement();
+                        ResultSet rs = st.executeQuery("select * from "+TableName);
+                         ResultSetMetaData rsMetaData = (ResultSetMetaData) rs.getMetaData();
+                         int count = rsMetaData.getColumnCount();
+                        StringBuilder query = new StringBuilder();
+                       int i = 1;
+                        if(TableName.equals("books"))
+                        {
+                            i=2;
+                        }
+                        for(; i<=count; i++) {
+                            query.append(rsMetaData.getColumnName(i));
+                            if(i<count)
+                            {
+                                query.append(',');
+                            }
+                            
+                          // System.out.println(rsMetaData.getColumnName(i));
+                        }
+                        
+                        System.out.println("insert into "+ TableName+
+                                "("+query.toString()+")"
+                                        +" values("
+                                +dataInput.toString()+ ")");
+                        st.executeUpdate("insert into "+ TableName+
+                                "("+query.toString()+")"
+                                        +" values("
+                                +dataInput.toString()+ ");");
+                        
+                        
+
+                    } catch (Exception e) {
+                        //JOptionPane.showMessageDialog(null, e);
+                        System.out.println(e);
+
+                        //
+                    }
+
+                }
+                JOptionPane.showMessageDialog(null, "Successfully Updated");
+
+                setVisible(false);
+                new home().setVisible(true);
+                Reader.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("An error has occurred.");
+                e.printStackTrace();
+            }
+        }
+           //new IssueStudentId(BookId).setVisible(true);
+
+        } else {
+            if (jTable1.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this, "Table is Empty");
+            } else {
+                JOptionPane.showMessageDialog(this, "Please select any one row");
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+        new home().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,8 +297,15 @@ public class overview extends javax.swing.JFrame {
                 new overview().setVisible(true);
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

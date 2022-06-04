@@ -21,7 +21,7 @@ public class ConnectionProvider {
             Class.forName("com.mysql.jdbc.Driver");
             
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms","root","");
-            System.out.println("Connection Successful");
+            //System.out.println("Connection Successful");
             return con;
         }
         catch(Exception e ){

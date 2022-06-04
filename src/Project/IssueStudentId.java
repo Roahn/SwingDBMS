@@ -103,6 +103,7 @@ public class IssueStudentId extends javax.swing.JFrame {
            {
                st = con.prepareStatement("select * from student where student_id ="+StudentId+";");
                 ResultSet rs=st.executeQuery();
+                
                  if(rs.next())
                 {
                      st.executeUpdate
@@ -111,7 +112,10 @@ public class IssueStudentId extends javax.swing.JFrame {
                       JOptionPane.showMessageDialog(this, "Book Issued Successfully");
                     
                           
-                }
+                }else
+                 {
+                     JOptionPane.showMessageDialog(this, "student does not exist");
+                 }
            }
             
             

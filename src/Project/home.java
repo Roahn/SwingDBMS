@@ -65,7 +65,7 @@ public class home extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("OVERVIEW");
+        jButton5.setText("Import Data");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
@@ -137,6 +137,7 @@ public class home extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        setVisible(false);
         new overview().setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
