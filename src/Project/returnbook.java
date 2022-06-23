@@ -142,7 +142,7 @@ public class returnbook extends javax.swing.JFrame {
 
             },
             new String [] {
-                "BookId", "Student Id"
+                "BookId", "User Id"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -252,12 +252,13 @@ public class returnbook extends javax.swing.JFrame {
             int SelectedRowIndex = jTable1.getSelectedRow();
             int SelectedColIndex = jTable1.getSelectedColumn();
             String StudentID = (String) jTable1.getValueAt(SelectedRowIndex, 1);
+            String BookId = (String) jTable1.getValueAt(SelectedRowIndex, 0);
             System.out.println(StudentID);
             try {
                 Connection con = ConnectionProvider.getCon();
                 
                 Statement st = con.createStatement();
-                st.executeUpdate("delete   from issuebooks where student_id = "+StudentID);
+                st.executeUpdate("delete   from issuebooks where bookid = "+BookId);
                 JOptionPane.showMessageDialog(this, "Book Returned Successfully");
                     setVisible(false);
                     new returnbook().setVisible(true);

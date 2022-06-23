@@ -5,13 +5,13 @@ package Project;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import Project.ConnectionProvider;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author Rohan
@@ -22,6 +22,7 @@ public class IssueStudentId extends javax.swing.JFrame {
      * Creates new form IssueStudentId
      */
     private String BookId;
+
     public IssueStudentId(String BookId) {
         initComponents();
         this.BookId = BookId;
@@ -40,6 +41,7 @@ public class IssueStudentId extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,12 +51,19 @@ public class IssueStudentId extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Enter Student ID ");
+        jLabel1.setText("Enter  ID ");
 
         jButton1.setText("Submit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Back");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -74,6 +83,10 @@ public class IssueStudentId extends javax.swing.JFrame {
                         .addGap(222, 222, 222)
                         .addComponent(jLabel1)))
                 .addContainerGap(243, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -84,7 +97,9 @@ public class IssueStudentId extends javax.swing.JFrame {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39)
                 .addComponent(jButton1)
-                .addContainerGap(153, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(48, 48, 48))
         );
 
         pack();
@@ -92,49 +107,67 @@ public class IssueStudentId extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-           try{
+        try {
             Connection con = ConnectionProvider.getCon();
             PreparedStatement st = null;
             PreparedStatement st2 = null;
-            String StudentId=jTextField1.getText();
-           
-           
-           if(StudentId!=null)
-           {
-               st = con.prepareStatement("select * from student where student_id ="+StudentId+";");
-                ResultSet rs=st.executeQuery();
-                
-                 if(rs.next())
-                {
-                     st.executeUpdate
-                     ("insert into issuebooks(bookid,student_id)values("+BookId +","+rs.getString("student_id")+");");
-                     setVisible(false);
-                      JOptionPane.showMessageDialog(this, "Book Issued Successfully");
+            String StudentId = jTextField1.getText();
+
+            if (StudentId != null) {
+                System.out.println(StudentId);
+                char Arr[] = StudentId.toCharArray();
+                if (Arr[0] == 'S') {
+                    System.out.println("It is Staff Entry");
+                    st = con.prepareStatement("select * from staff where staffid = \"S_00007\";");
+
+                    ResultSet rs = st.executeQuery();
+                        
+                    if (rs.next()) {
+                        System.out.println(rs.getString("staffid"));
+                        st.executeUpdate("insert into issuebooks(bookid,student_id)values(\"10\",\"S_00007\")");
+                        setVisible(false);
+                        JOptionPane.showMessageDialog(this, "Book Issued Successfully");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "student does not exist");
+                    }
                     
-                          
-                }else
-                 {
-                     JOptionPane.showMessageDialog(this, "student does not exist");
-                 }
-           }
-            
-            
-            
-        }
-        catch(Exception e){
+                    
+                    
+                } else {
+                    System.out.println("It is Student Entry");
+                    st = con.prepareStatement("select * from student where student_id =" + StudentId + ";");
+
+                    ResultSet rs = st.executeQuery();
+
+                    if (rs.next()) {
+                        st.executeUpdate("insert into issuebooks(bookid,student_id)values(" + BookId + "," + rs.getString("student_id") + ");");
+                        setVisible(false);
+                        JOptionPane.showMessageDialog(this, "Book Issued Successfully");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "student does not exist");
+                    }
+
+                }
+
+            }
+
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
             setVisible(false);
-             //new newstudent().setVisible(true);
-            
-            
-            
-            
+            //new newstudent().setVisible(true);
+
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+        new issue().setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -173,6 +206,7 @@ public class IssueStudentId extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField jTextField1;
